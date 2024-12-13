@@ -62,3 +62,7 @@ async def main(message: cl.Message):
 
     except Exception as e:
         await msg.update(content=f"Error: {str(e)}")
+
+if __name__ == "__main__":
+    port = int(os.getenv("PORT", 10000))  # Default to 10000 for local testing
+    cl.run(host="0.0.0.0", port=port)
