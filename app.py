@@ -71,6 +71,8 @@ async def main(message: cl.Message):
 # Main entry point
 if __name__ == "__main__":
     # The platform may provide a PORT variable, use it for deployment
-    port = int(os.getenv("PORT", 10000))  # Default to 8000 if not provided
+    port = int(os.getenv("PORT", 8000))  # Default to 8000 if not provided
     # Bind to 0.0.0.0 to make the app accessible externally
-    cl.run(host="0.0.0.0", port=int(os.getenv("PORT", 8000)))
+    cl.run(host="0.0.0.0", port=port)
+    print(f"Using port: {port}")
+    print(f"Using port from: {os.getenv('PORT', 8000)}")
