@@ -1,9 +1,9 @@
 services:
   - type: web
     name: mental-health-chatbot
-    env: python3.10
+    env: python3.9
     buildCommand: pip install -r requirements.txt
-    startCommand: uvicorn app:cl_app --host 0.0.0.0 --port $PORT
+    startCommand: chainlit run app.py
     envVars:
       - key: PORT
         value: 10000

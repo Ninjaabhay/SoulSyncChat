@@ -79,14 +79,6 @@ async def main(message: cl.Message):
 #     cl.run(host="0.0.0.0", port=port)
 # Modified main block
 if __name__ == "__main__":
-    if os.environ.get("ENV") != "production":
-        cl.run(host="127.0.0.1", port=8000)
-    else:
-        port = int(os.environ.get("PORT", 10000))
-        print(f"Attempting to start server on port {port}")
-
-        # Use Uvicorn to run the Chainlit app
-        uvicorn.run("app:cl_app", host="0.0.0.0", port=port, reload=False)
-
-# Add this line at the end of the file
-cl_app = cl.App()
+    port = int(os.environ.get("PORT", 10000))
+    print(f"Attempting to start server on port {port}")
+    cl.run(host="0.0.0.0", port=port)
