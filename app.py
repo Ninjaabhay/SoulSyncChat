@@ -2,12 +2,16 @@ import os
 import chainlit as cl
 from openai import AsyncOpenAI
 
-# Get the XAI_API_KEY from environment variables
-XAI_API_KEY = os.getenv("XAI_API_KEY")
+# Environment variable handling
+XAI_API_KEY = os.environ.get("XAI_API_KEY")
+if not XAI_API_KEY:
+    raise ValueError("XAI_API_KEY environment variable is not set")
+
 client = AsyncOpenAI(
     api_key=XAI_API_KEY,
-    base_url="https://api.x.ai/v1",  # Make sure this is the correct API base URL
+    base_url="https://api.x.ai/v1",
 )
+
 
 # Define model settings for chat
 settings = {
@@ -68,11 +72,7 @@ async def main(message: cl.Message):
     except Exception as e:
         await msg.update(content=f"Error: {str(e)}")
 
-# Main entry point
+# Modified main block
 if __name__ == "__main__":
-    # The platform may provide a PORT variable, use it for deployment
-    port = int(os.getenv("PORT", 8000))  # Default to 8000 if not provided
-    # Bind to 0.0.0.0 to make the app accessible externally
+    port = int(os.environ.get("PORT", 8000))
     cl.run(host="0.0.0.0", port=port)
-    print(f"Using port: {port}")
-    print(f"Using port from: {os.getenv('PORT', 8000)}")
