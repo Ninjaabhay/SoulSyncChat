@@ -1,15 +1,15 @@
 import os
 import chainlit as cl
-# import asyncio
 from openai import AsyncOpenAI
 
+# Get the XAI_API_KEY from environment variables
 XAI_API_KEY = os.getenv("XAI_API_KEY")
 client = AsyncOpenAI(
-    # api_key='xai-VevJhkQBpx7JVYIJHpkBWHMeOBOpKej32x4NuAgvvGgk1OBIhKTG1xXemoTZNimlDIMEUvk1cBIVoSUb',
     api_key=XAI_API_KEY,
-    base_url="https://api.x.ai/v1",
+    base_url="https://api.x.ai/v1",  # Make sure this is the correct API base URL
 )
 
+# Define model settings for chat
 settings = {
     "model": "grok-beta",
     "temperature": 0.7,
@@ -18,6 +18,8 @@ settings = {
     "frequency_penalty": 0,
     "presence_penalty": 0,
 }
+
+# On chat start, set up the system message
 
 
 @cl.on_chat_start
@@ -38,6 +40,8 @@ Remember, your goal is to create a safe and supportive space for users, while ma
         [{"role": "system", "content": sys_message}],
     )
 
+# Handle incoming user messages
+
 
 @cl.on_message
 async def main(message: cl.Message):
@@ -47,6 +51,7 @@ async def main(message: cl.Message):
     msg = cl.Message(content="")
 
     try:
+        # Streaming chat completions from OpenAI
         stream = await client.chat.completions.create(
             messages=message_history,
             stream=True,
@@ -63,6 +68,9 @@ async def main(message: cl.Message):
     except Exception as e:
         await msg.update(content=f"Error: {str(e)}")
 
+# Main entry point
 if __name__ == "__main__":
-    port = int(os.getenv("PORT", 10000))  # Default to 10000 for local testing
+    # The platform may provide a PORT variable, use it for deployment
+    port = int(os.getenv("PORT", 8000))  # Default to 8000 if not provided
+    # Bind to 0.0.0.0 to make the app accessible externally
     cl.run(host="0.0.0.0", port=port)
